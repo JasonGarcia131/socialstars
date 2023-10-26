@@ -1,47 +1,39 @@
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
-// import useLogout from "../hooks/useLogout";
-// import useAuth from "../hooks/useAuth";
-// import jwt_decode from "jwt-decode";
-// import { CopyToClipboard } from "react-copy-to-clipboard";
-// import { FaPaperclip } from "react-icons/fa";
-// import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import jwt_decode from "jwt-decode";
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    // const logout = useLogout();
+    const { auth } = useAuth();
+
+    const decode = auth?.accessToken
+        ? jwt_decode(auth.accessToken)
+        : undefined
+
+    const {userId} = decode?.UserInfo;
+
+    console.log("auth", userId)
 
     const signOut = async () => {
         await logout();
-        navigate('/linkpage');
+        navigate('/');
     }
 
-    //Authenticated User
-    // const { auth } = useAuth();
-
-    //User info decoded from the access token
-    // const decode = auth.accessToken
-    //     ? jwt_decode(auth.accessToken)
-    //     : undefined
-
-    // const user = decode?.UserInfo;
-    // const id = user?.userId;
-    // const role = user?.roles;
-    
     return (
-        <section>
-            <h1>Home</h1>
-            <br />
-            {/* {role?.includes(1994) ? <Link to='/admin'>Admin's Home</Link> : ""} */}
-            <br />
-            <Link to='profile'>Profile</Link>
-            <br />
-            <Link to="news">New upcoming features</Link>
-            <br />
-            <Link to='feedback'>Give feedback?</Link>
-            <br />
-            <Link to='about'>About Stars</Link>
-            <br />
-            {/* <CopyToClipboard
+        <div className='w-full h-screen bg-space-background'>
+            <section className='w-[400px] h-[400px] flex flex-col justify-around absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] opacity-95 text-center text-slate-300'>
+                <h1 className="text-2xl">Home</h1>
+                {/* {role?.includes(1994) && <Link to='/admin'>Admin's Home</Link>} */}
+                <br />
+                <Link to={`profile/${userId}`}>Profile</Link>
+                <br />
+                <Link to="news">Upcoming Features</Link>
+                <br />
+                <Link to='feedback'>Give Feedback?</Link>
+                <br />
+                <Link to='about'>About Social Stars</Link>
+                <br />
+                {/* <CopyToClipboard
                 text={`localhost:3000/users/${id}`}
                 onCopy={() => setCopied(true)}
             >
@@ -50,10 +42,11 @@ const Dashboard = () => {
                 </div>
             </CopyToClipboard>
             {copied ? <p>Copied!</p> : ""} */}
-            <div className="flexGrow">
+                {/* <div className="flexGrow">
                 <button onClick={signOut}>Sign Out</button>
-            </div>
-        </section>
+            </div> */}
+            </section>
+        </div>
     )
 }
 
