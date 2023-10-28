@@ -4,6 +4,7 @@ import axios from '../api/axios'
 import Header from '../components/Header'
 import Bio from '../components/Bio'
 import Nav from '../components/Nav'
+import Posts from '../components/Posts'
 import PostTextBox from '../components/PostTextBox'
 export const profileLoader = async ({ params }) => {
 
@@ -16,10 +17,13 @@ const Profile = () => {
   console.log(userInfo)
   return (
     <div>
-      <Header/>
-      <Bio/>
-      <Nav/>
-      <PostTextBox/>
+      <Header />
+      <div className='md:flex md:flex-row'>
+        <Bio />
+        <PostTextBox />
+      </div>
+      <Posts />
+      <Nav />
     </div>
   )
 }

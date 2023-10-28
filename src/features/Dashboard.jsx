@@ -27,7 +27,7 @@ const Dashboard = () => {
                 <h1 className="text-2xl">Home</h1>
                 {/* {role?.includes(1994) && <Link to='/admin'>Admin's Home</Link>} */}
                 <br />
-                <Link to={`profile/${userId}`}>Profile</Link>
+                <Link to={`/profile/${userId}`}>Profile</Link>
                 <br />
                 <Link to="news">Upcoming Features</Link>
                 <br />
