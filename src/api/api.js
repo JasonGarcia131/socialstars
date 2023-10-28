@@ -1,7 +1,8 @@
 import axios from "./axios"
 const LOGIN_URL = '/auth'
 
-export async function loginUser({user, pwd}) {
+export async function loginUser({ user, pwd }) {
+
     const response = await axios.post(LOGIN_URL,
         JSON.stringify({ user, pwd }),
         {
@@ -10,13 +11,6 @@ export async function loginUser({user, pwd}) {
         }
     );
     const accessToken = response?.data?.accessToken;
-    // if (!response.ok) {
-    //     throw {
-    //         // message: data.message,
-    //         statusText: response.statusText,
-    //         status: response.status
-    //     }
-    // }
+    return accessToken;
 
-    return accessToken
 }

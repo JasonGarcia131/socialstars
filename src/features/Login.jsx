@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Form, useLoaderData, useActionData, useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Form, useLoaderData, useActionData, useNavigate, useLocation, redirect } from 'react-router-dom';
 import { loginUser } from '../api/api';
 import useAuth from '../hooks/useAuth';
 
@@ -9,34 +9,38 @@ export const loginLoader = ({ request }) => {
 }
 
 // Form action returns the access token.
-export const action = async ({ request }) => {
-    const formData = await request.formData();
-    const user = formData.get("username");
-    const pwd = formData.get("password");
-    const accessToken = await loginUser({ user, pwd })
-    return accessToken
+export const loginAction = (setAuth) => async ({ request }) => {
+    try {
+        const formData = await request.formData();
+        const user = formData.get("username");
+        const pwd = formData.get("password");
+        const accessToken = await loginUser({ user, pwd })
+        console.log({accessToken})
+        await setAuth({ accessToken })
+        return redirect('/dashboard')
+    }catch (error) {
+        return error?.response?.data
+      }
+
 }
 
 const Login = () => {
     // Destructures the useAuth hook to use global state variables
-    const { setAuth, persist, setPersist } = useAuth();
+    const {persist, setPersist } = useAuth();
 
     const message = useLoaderData();
+    const error = useActionData();
+
+    console.log(error)
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/dashboard";
 
     // Gets the access token when the form is submitted and saves it to auth context.
     // persist value gets stored in local storage to keep user logged in on a trusted device.
-    let accessToken;
-    accessToken = useActionData();
     useEffect(() => {
-        if (accessToken) {
-            setAuth({ accessToken })
-            localStorage.setItem("persist", persist);
-            navigate(from, { replace: true });
-        }
-    }, [accessToken, persist])
+        localStorage.setItem("persist", persist);
+    }, [persist])
 
     const togglePersist = () => {
         setPersist(prev => !prev);
@@ -46,6 +50,7 @@ const Login = () => {
         <div className='w-full h-screen bg-space-background'>
             <section className='w-[400px] h-[400px] absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] opacity-95 text-center text-slate-300'>
                 {message && <p>{message}</p>}
+                {error && <p>{error}</p>}
                 <h1 className='text-[2rem] color-white'>Login</h1>
                 <Form method='POST' state={{ some: 'value' }} className='px-2 flex flex-col grow justify-evenly items-center mt-4' >
                     <label htmlFor="username">Username:</label>
@@ -59,7 +64,7 @@ const Login = () => {
                     <input
                         type="password"
                         name="password"
-                        className='my-2 p-2 rounded-lg w-full'
+                        className='my-2 p-2 rounded-lg w-full text-black'
                         required
                     />
                     <button className='my-2 bg-'>Sign In</button>

@@ -1,10 +1,12 @@
 import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import jwt_decode from "jwt-decode";
+import useLogout from "../hooks/useLogout";
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const { auth } = useAuth();
+    const logout = useLogout();
 
     const decode = auth?.accessToken
         ? jwt_decode(auth.accessToken)
@@ -33,6 +35,7 @@ const Dashboard = () => {
                 <br />
                 <Link to='about'>About Social Stars</Link>
                 <br />
+                <button onClick={signOut}>Sign Out</button>
                 {/* <CopyToClipboard
                 text={`localhost:3000/users/${id}`}
                 onCopy={() => setCopied(true)}
