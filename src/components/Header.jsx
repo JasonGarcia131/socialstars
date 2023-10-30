@@ -1,21 +1,23 @@
 import React from 'react';
 import { Form } from 'react-router-dom';
 import InputFile from './InputFile';
-// const headerAction = () => {
+import { useContext } from 'react';
+import { ThemeContext } from '../context/ThemeContext';
 
-// }
-
-const Header = () => {
-  return (
-    <header className='w-full h-[300px] bg-red-600 flex flex-col'>
-        <p className='w-full h-[290px] bg-green-500 md:w-1/2 text-center m-auto'>Image</p>
-        <Form>
-          <input
-        type='file'
-        />  
-        </Form>
-    </header>
-  )
+const Header = ({ bannerImageLight, bannerImageShadow }) => {
+    const theme = useContext(ThemeContext);
+    const imageUrl = theme === 'light' ? bannerImageLight : bannerImageShadow;
+    return (
+        <header className='w-full h-[300px]flex flex-col'>
+            <img className='w-full h-[full] bg-green-500 md:w-1/2 text-center m-auto' src={imageUrl} />
+            <Form>
+                <input
+                    type='file'
+                    className='absolute top-0'
+                />
+            </Form>
+        </header>
+    )
 }
 
 export default Header;

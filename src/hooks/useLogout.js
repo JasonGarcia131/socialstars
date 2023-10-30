@@ -1,5 +1,6 @@
 import axios from "../api/axios";
 import useAuth from "./useAuth";
+import { redirect } from "react-router-dom";
 
 const useLogout = () => {
     const { setAuth } = useAuth();
@@ -10,6 +11,7 @@ const useLogout = () => {
             const response = await axios('/logout', {
                 withCredentials: true
             });
+            redirect('/')
         } catch (err) {
             console.error(err);
         }

@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { ClipLoader } from "react-spinners";
 import useRefreshToken from '../hooks/useRefreshToken'
 import useAuth from '../hooks/useAuth';
 
@@ -7,7 +8,6 @@ const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
     const { auth, persist } = useAuth();
-    console.log("persist in comp",persist)
 
     useEffect(() => {
         let isMounted = true;
@@ -38,7 +38,12 @@ const PersistLogin = () => {
             {!persist
                 ? <Outlet />
                 : isLoading
-                    ? <p>Loading...</p>
+                    ? <div className="h-screen flex justify-center items-center align-center">
+                        <ClipLoader
+                            size={130}
+                            color="white"
+                        />
+                    </div>
                     : <Outlet />
             }
         </>

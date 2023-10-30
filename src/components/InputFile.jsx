@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 const InputFile = (props) => {
 
+    // Need to refactor to use axios interceptors
     // const axiosPrivate = useAxiosPrivate();
-
     const { theme, imageKey, id, label, userId, setUserInfo } = props;
 
     const [uploadBtn, setUploadBtn] = useState(false);
@@ -70,7 +70,7 @@ const InputFile = (props) => {
 
     return (
         <div className="m-4">
-            <label htmlFor={id} id="inputLabel" className="border-4 p-2">{label}</label>
+            <label htmlFor={id} id="inputLabel" className="border-4">{label}</label>
             {message}
             <input
                 type="file"

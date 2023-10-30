@@ -8,15 +8,12 @@ import Unauthorized from './components/Unauthorized'
 import PersistLogin from "./components/PersistLogin";
 import Profile, {profileLoader} from "./features/Profile";
 import useAuth from "./hooks/useAuth";
+import PageNotFound from "./components/PageNotFound";
 
 const ROLES = {
   User: 2001,
   Admin: 1994
 }
-
-import AuthContext from "./context/AuthProvider";
-import { useContext } from "react";
-
 const App = () => {
  const {setAuth, auth} = useAuth();
 
@@ -24,7 +21,7 @@ const App = () => {
     <Route path="/" element={<Layout />}>
 
       {/* Public Routes */}
-      <Route index element={<Landing />} />
+      <Route index element={<Landing auth={auth} />} />
       <Route path="unauthorized" element={<Unauthorized/>}/>
       <Route
         path="login"
@@ -47,6 +44,9 @@ const App = () => {
             />
         </Route>
       </Route>
+
+      {/* Catch all route */}
+      <Route path="*" element={<PageNotFound />} />
     </Route>
   ))
 
