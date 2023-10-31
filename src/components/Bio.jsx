@@ -1,8 +1,7 @@
-import React from 'react'
 import InputFile from './InputFile';
 
 const Bio = (props) => {
-    const {username, profilePicture, bio} = props;
+    const {username, profilePicture, bio, id} = props;
     return (
         <section className='h-[300px] flex flex-col justify-between text-center p-4 md:w-1/3'>
             <div className='w-[130px] h-[130px] rounded-full mx-auto'>
@@ -11,11 +10,9 @@ const Bio = (props) => {
             <InputFile
                 label="Edit Profile Picture"
                 imageKey="profilePicture"
-                userId={1}
+                userId={id}
                 id="editProfilePicture"
-                setUserInfo={()=>null}
                 theme="light"
-
             />
             <div>
                 <p>{username}</p>

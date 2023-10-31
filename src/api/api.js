@@ -1,7 +1,7 @@
 import axios from "./axios"
 const LOGIN_URL = '/auth'
 
-export async function loginUser({ user, pwd }) {
+export const loginUser = async ({ user, pwd }) => {
 
     const response = await axios.post(LOGIN_URL,
         JSON.stringify({ user, pwd }),
@@ -13,4 +13,14 @@ export async function loginUser({ user, pwd }) {
     const accessToken = response?.data?.accessToken;
     return accessToken;
 
+}
+
+export const getProfile = async (params) => {
+    console.log(params.userId)
+    try{
+        const UserInfo = await axios.get(`http://localhost:3500/users/${params.userId}`)
+        return UserInfo
+    }catch(e){
+        return e
+    }
 }

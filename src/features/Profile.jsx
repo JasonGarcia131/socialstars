@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useLoaderData } from 'react-router-dom'
-import axios from '../api/axios'
+import React, { useState } from 'react'
+import { useLoaderData, defer, Await } from 'react-router-dom'
+import { getProfile } from '../api/api'
 import Header from '../components/Header'
 import Bio from '../components/Bio'
 import Nav from '../components/Nav'
@@ -10,24 +10,43 @@ import { ThemeContext } from '../context/ThemeContext'
 
 
 export const profileLoader = async ({ params }) => {
-  const UserInfo = await axios.get(`http://localhost:3500/users/${params.userId}`)
-  return UserInfo;
+  const userInfoPromise = getProfile(params);
+  console.log(userInfoPromise)
+  return defer({ UserInfo: userInfoPromise });
 }
 
 const Profile = () => {
-  const userInfo = useLoaderData();
+  const loaderData = useLoaderData();
   const [theme, setTheme] = useState("light");
-  const { bannerImageLight, bannerImageShadow, bio, horoscopeSign, profilePicture, username, _id } = userInfo.data;
+ 
+  const ProfileData = () => {
+    return (
+      <Await resolve={loaderData.UserInfo}>
+        {
+          (UserInfo) => {
+            console.log("user info", UserInfo)
+            const { bannerImageLight, bannerImageShadow, bio, horoscopeSign, profilePicture, username, _id } = UserInfo.data;
+            return (
+              <>
+                <Header id={_id} bannerImageLight={bannerImageLight} bannerImageShadow={bannerImageShadow} />
+                <div className='md:flex md:flex-row mb-10'>
+                  <Bio id={_id} profilePicture={profilePicture} bio={bio} username={username} />
+                  <PostTextBox />
+                </div>
+                <Posts id={_id} profilePicture={profilePicture} username={username} />
+                <Nav setTheme={setTheme} />
+              </>
+            )
+          }
+        }
+      </Await>
+    )
+  }
+  
   return (
     <div>
       <ThemeContext.Provider value={theme}>
-        <Header bannerImageLight={bannerImageLight} bannerImageShadow={bannerImageShadow} />
-        <div className='md:flex md:flex-row mb-10'>
-          <Bio profilePicture={profilePicture} bio={bio} username={username} />
-          <PostTextBox />
-        </div>
-        <Posts id={_id} profilePicture={profilePicture} username={username} />
-        <Nav setTheme={setTheme} />
+        <ProfileData />
       </ThemeContext.Provider>
     </div>
   )

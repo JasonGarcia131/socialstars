@@ -29,8 +29,7 @@ const Posts = ({ id, username, profilePicture }) => {
     const theme = useContext(ThemeContext);
 
     useEffect(()=>{
-        setPaginatedPosts([]);
-        getPosts(1)
+     setPaginatedPosts([]);
     },[theme]);
 
     // State variable for a single post
