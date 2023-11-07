@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { AuthProvider } from "../context/AuthProvider";
 const Layout = () => {
     return (
-        <main className="App">
+        <main>
             <AuthProvider>
                 <Outlet />
             </AuthProvider>

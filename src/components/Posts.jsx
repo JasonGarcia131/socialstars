@@ -1,44 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import Post from './Post'
-import InfiniteScroll from 'react-infinite-scroll-component';
-import axios from '../api/axios';
+import React, { useEffect, useState } from 'react';
 import { useContext } from 'react';
+import { ClipLoader } from "react-spinners";
 import { ThemeContext } from '../context/ThemeContext';
-// const POSTS = [
-//     {
-//         author: {
-//             _id: "123",
-//             username: "jayswitch131",
-//             profilePicture: "picture",
-//         },
-//         content: "post",
-//         theme: "light",
-//         createdAt: "date"
-//     }
-// ]
+import Post from './Post';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const LIMIT = 10;
 
-const Posts = ({ id, username, profilePicture }) => {
-
-
-    const [loading, setLoading] = useState(false);
+const Posts = ({ id, username, isPublic, profilePicture}) => {
+    const axiosPrivate = useAxiosPrivate();
     const [editMode, setEditMode] = useState(false);
     const [errMsg, setErrMsg] = useState("");
-    const [paginatedPosts, setPaginatedPosts] = useState([]);
     const theme = useContext(ThemeContext);
 
-    useEffect(()=>{
-     setPaginatedPosts([]);
-    },[theme]);
-
-    // State variable for a single post
-    const [post, setPost] = useState({
-        id: id,
-        postTheme: theme,
-        content: "",
-        isPrivate: false
-    });
+    useEffect(() => {
+    }, [theme]);
 
     //State variable for the pagination results
     const [page, setPage] = useState({
@@ -50,25 +27,22 @@ const Posts = ({ id, username, profilePicture }) => {
             page: 0,
             limit: 0
         },
+        results: []
     });
 
     const getPosts = async (nextPage) => {
         const controller = new AbortController();
         try {
-            const response = await axios.get(`/posts/paginate/?id=${id}&page=${nextPage}&limit=${LIMIT}&theme=${theme}&public=false`, {
+            const response = await axiosPrivate.get(`/posts/paginate/?id=${id}&page=${nextPage}&limit=${LIMIT}&theme=${theme}&public=${isPublic}`, {
                 signal: controller.signal
-            });
-
-            console.log(response?.data)
+            }) 
             controller.abort();
-
             setPage({
                 next: response?.data?.next,
                 previous: response?.data?.previous,
-                total: response?.data?.total
+                total: response?.data?.total,
+                results: response?.data?.results
             });
-
-            setPaginatedPosts((prevData) => [...prevData, response?.data?.results]);
 
         } catch (e) {
             if (!e?.response) {
@@ -88,13 +62,12 @@ const Posts = ({ id, username, profilePicture }) => {
     }
 
     const handleDelete = async (id) => {
-
-        
         try {
-            const response = await axios.delete(`/posts/${id}`);
+            const response = await axiosPrivate.delete(`/posts/${id}`);
             if (response.status === 200) {
-                const filteredPost = paginatedPosts.flat().filter(post => post._id !== response.data._id);
-                setPaginatedPosts(filteredPost);
+                // Filters out the deleted post so we dont refetch;
+                const filteredPost = page.results.filter(post => post._id !== response.data._id);
+                setPage((prev) => ({ ...prev, results: filteredPost }));
             }
         } catch (e) {
             if (!e?.response) {
@@ -105,31 +78,27 @@ const Posts = ({ id, username, profilePicture }) => {
             }
         }
     }
-
-    //Infinite scroll pagination function
-    const handleInfiniteScroll = (api, page) => {
-        api(page.next?.page);
-    }
-
+   
     return (
-        <div className='w-full px-2'>
-
+        <div className={`w-full px-2`}>
+            <p className='text-red-500 font-bold mb-2 text-center'>{errMsg}</p>
             <InfiniteScroll
-                dataLength={paginatedPosts.length}
+                dataLength={page.results.length}
                 next={() => getPosts(page.next?.page)}
                 hasMore={page.next}
-                loader={<h4>Loading...</h4>}
+                loader={<div className='w-full text-center'><ClipLoader size={70} color='pink'/></div>
+                }
                 scrollableTarget="scrollableDiv"
-                scrollThreshold={.99}
+                scrollThreshold={.70}
+                endMessage="No posts"
+                className={`mb-20`}
             >
-                {paginatedPosts.flat().map((post, index) => (
-
-                    <Post key={index} username={username} profilePicture={profilePicture} content={post.content} handleDelete={handleDelete} toggleEditDelete={toggleEditDelete} editMode={editMode} theme={post.theme} date={post.createdAt} id={post._id} isPrivate={post.isPrivate} />
-
+                {page.results.map((post, index) => (
+                    <Post key={index} username={username} profilePicture={profilePicture} content={post.content} handleDelete={handleDelete} toggleEditDelete={toggleEditDelete} editMode={editMode} date={post.createdAt} id={post._id} isPrivate={post.isPrivate} isPublic={isPublic} />
                 ))}
             </InfiniteScroll>
         </div>
     )
 }
 
-export default Posts
+export default Posts;

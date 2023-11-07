@@ -1,7 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
-import spaceBackground from './public/assets/space-background.jpg';
-
 export default {
   content: [
     "./index.html",
@@ -14,6 +11,7 @@ export default {
       }
     },
   },
+  darkMode: 'class',
   plugins: [],
 }
 

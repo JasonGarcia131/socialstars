@@ -26,7 +26,6 @@ const PersistLogin = () => {
 
         // Avoids unwanted call to verifyRefreshToken
         !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
-
         return () => isMounted = false;
     }, [])
 
