@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLoaderData } from 'react-router-dom';
 import { ClipLoader } from "react-spinners";
 import useAuth from '../hooks/useAuth';
-
+import axios from '../api/axios';
 // This loader returns the message from the url when attempting to access private routes
 export const loginLoader = ({ request }) => {
     return new URL(request.url).searchParams.get("message")
