@@ -26,7 +26,6 @@ const Dashboard = () => {
         <div className='w-full h-screen bg-space-background'>
             <section className='w-[400px] h-[400px] flex flex-col justify-around absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] text-center text-slate-300'>
                 <h1 className="text-2xl">Home</h1>
-                {/* {role?.includes(1994) && <Link to='/admin'>Admin's Home</Link>} */}
                 <Link className='underline' to={`/profile/${userId}/?theme=light`}>Profile</Link>
                 <Link className='underline' to="/news">Upcoming Features</Link>
                 <Link className='underline' to='/feedback'>Give Feedback?</Link>

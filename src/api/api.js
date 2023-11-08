@@ -1,6 +1,6 @@
-import axios from "./axios"
-const LOGIN_URL = '/auth'
+import axios from "../api/axios";
 
+const LOGIN_URL = '/auth';
 export const loginUser = async ({ user, pwd }) => {
 
         const response = await axios.post(LOGIN_URL,
@@ -21,7 +21,7 @@ export const loginUser = async ({ user, pwd }) => {
 
 export const getProfile = async ({ params }) => {
     try {
-        const UserInfo = await axios.get(`http://localhost:3500/users/${params.userId}`)
+        const UserInfo = await axios.get(`/users/${params.userId}`);
         return UserInfo
     } catch (e) {
         return e

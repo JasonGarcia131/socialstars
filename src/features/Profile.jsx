@@ -39,11 +39,11 @@ const Profile = () => {
       <Await resolve={loaderData.UserInfo}>
         {
           (UserInfo) => {
-            const { bannerImageLight, bannerImageShadow, bio, horoscopeSign, profilePicture, username, _id } = UserInfo.data;
+            const { bio, horoscopeSign, profilePicture, username, _id } = UserInfo.data;
             if (_id !== userId) return navigate(`/profile/${userId}`)
             return (
               <div className={`${themeClass}`}>
-                <Header id={_id} bannerImageLight={bannerImageLight} bannerImageShadow={bannerImageShadow} isPublic={false} horoscopeSign={horoscopeSign} />
+                <Header id={_id} isPublic={false} horoscopeSign={horoscopeSign} />
                 <div className='md:flex md:flex-row mb-10'>
                   <Bio id={_id} profilePicture={profilePicture} bio={bio} username={username} isPublic={false}/>
                   <PostTextBox id={_id} />
