@@ -23,6 +23,8 @@ export const loginLoader = ({ request }) => {
 //     }
 // }
 
+const LOGIN_URL = '/auth';
+
 const Login = () => {
     // Destructures the useAuth hook to use global state variables
     const { setAuth, persist, setPersist } = useAuth();
@@ -61,7 +63,7 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-
+                console.log(response)
             setIsLoading(false);
             const accessToken = response?.data?.accessToken;
 
