@@ -1,7 +1,7 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./features/Landing";
-import Login, { loginLoader, loginAction } from "./features/Login";
+import Login, { loginLoader } from "./features/Login";
 import Register from "./features/Register";
 import Dashboard from "./features/Dashboard";
 import RequireAuth from './components/RequireAuth'
@@ -28,16 +28,8 @@ const App = () => {
       <Route index element={<Landing />} />
       <Route path="unauthorized" element={<Unauthorized />} />
       <Route path="about" element={<About/>}/>
-      <Route
-        path="login"
-        element={<Login />}
-        loader={loginLoader}
-        action={loginAction(setAuth)}
-      />
-      <Route
-        path="register"
-        element={<Register />}
-      />
+      <Route path="login" element={<Login />} loader={loginLoader}/>
+      <Route path="register" element={<Register />}/>
       <Route exact path={`ispublic/profile/:userId`}
         element={<PublicProfile />}
         loader={profileLoader}
