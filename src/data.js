@@ -97,7 +97,7 @@ export const horoscopeImages = [
             light: sagitariusLight,
             shadow: sagitariusShadow
         },
-        horoscope: 'sagitarius'
+        horoscope: 'sagittarius'
     },
     {
         image: {
