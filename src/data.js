@@ -34,7 +34,6 @@ import taurusShadow from "./images/taurus-shadow.png";
 import virgoLight from "./images/virgo-light.png";
 import virgoShadow from "./images/virgo-shadow.png";
 
-
 export const horoscopeImages = [
       {
         image: {
