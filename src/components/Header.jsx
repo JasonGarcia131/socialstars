@@ -19,7 +19,7 @@ const Header = ({horoscopeSign }) => {
     const bg = horoscopeImages.find(image=>image.horoscope === horoscopeSign);
     const image = searchParams.get("theme") === "shadow" ? bg.image.shadow : bg.image.light;
     return (
-        <header className='w-full h-[450px] flex flex-col'>
+        <header className='w-full h-[450px] flex flex-col md:border-b-4'>
             <img className={`w-full h-[100%] m-auto md:max-w-[700px]`} src={image} />
         </header>
     )

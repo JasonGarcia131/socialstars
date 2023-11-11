@@ -1,13 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useLoaderData } from 'react-router-dom';
 import { ClipLoader } from "react-spinners";
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
-// This loader returns the message from the url when attempting to access private routes
-export const loginLoader = ({ request }) => {
-    return new URL(request.url).searchParams.get("message")
-}
 
 // Form action returns the access token.
 // export const loginAction = (setAuth) => async ({ request }) => {
@@ -28,8 +23,6 @@ const LOGIN_URL = '/auth';
 const Login = () => {
     // Destructures the useAuth hook to use global state variables
     const { setAuth, persist, setPersist } = useAuth();
-    const message = useLoaderData();
-
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -54,7 +47,6 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-
         try {
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ user, pwd }),
@@ -63,15 +55,14 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-                console.log(response)
             setIsLoading(false);
             const accessToken = response?.data?.accessToken;
-
             setAuth({ accessToken });
             setUser('');
             setPwd('');
             navigate(from, { replace: true });
         } catch (err) {
+            setIsLoading(false);
             if (!err?.response) {
                 setErrMsg('No Server Response');
             } else if (err.response?.status === 400) {
@@ -96,9 +87,8 @@ const Login = () => {
     return (
         isLoading ? (<div className='w-full h-screen bg-space-background flex jusitfy-center items-center '><ClipLoader size={70} color='pink' className='mx-auto'/></div>) : (
             <div className='w-full h-screen bg-space-background'>
-                <section className='w-[350px] h-[350px] absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] text-center text-slate-300'>
+                <section className='w-[350px] h-[370px] absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] text-center text-slate-300'>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    {message && <p>{message}</p>}
                     <h1 className='text-[2rem] '>Login</h1>
                     <form onSubmit={handleSubmit} className='flex flex-col grow justify-evenly items-center mt-4 text-white' >
                         <label htmlFor="username">Username:</label>

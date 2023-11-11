@@ -3,6 +3,7 @@ import { useLoaderData, defer, Await, useSearchParams } from 'react-router-dom';
 import { getProfile } from '../api/api';
 import { ThemeContext } from '../context/ThemeContext';
 import { ClipLoader } from "react-spinners";
+import { useAsyncValue } from 'react-router-dom';
 import Header from '../components/Header';
 import Bio from '../components/Bio';
 import Nav from '../components/Nav';
@@ -15,33 +16,51 @@ export const profileLoader = async ({ params }) => {
 
 const PublicProfile = () => {
   const loaderData = useLoaderData();
-  const [theme, setTheme] = useState("light");
   const [searchParams, setSearchParams] = useSearchParams();
 
+ //State variable for the pagination results
+ const [page, setPage] = useState({
+  next: {
+    page: 1,
+    limit: 0
+  },
+  previous: {
+    page: 0,
+    limit: 0
+  },
+  results: []
+});
+
   useEffect(() => {
-  }, [searchParams])
+    setPage({
+      next: {
+        page: 1,
+        limit: 0
+      },
+      previous: {
+        page: 0,
+        limit: 0
+      },
+      results: []
+    });
+
+  }, [searchParams]);
 
 
   const ProfileData = () => {
     const themeClass = searchParams.get("theme") === "shadow" ? 'bg-black text-white' : "";
+    const resovledUser = useAsyncValue();
+    const [profileData, setProfileData] = useState(resovledUser?.data);
+    const { bio, horoscopeSign, profilePicture, username, _id } = profileData;
     return (
-      <Await resolve={loaderData.UserInfo}>
-        {
-          (UserInfo) => {
-            const {  bio, horoscopeSign, profilePicture, username, _id } = UserInfo.data;
-            return (
-              <div className={`${themeClass}`}>
-                <Header id={_id} isPublic={true} horoscopeSign={horoscopeSign} />
-                <div className='md:flex md:flex-row mb-10'>
-                  <Bio id={_id} profilePicture={profilePicture} bio={bio} username={username} isPublic={true}/>
-                </div>
-                <Posts id={_id} profilePicture={profilePicture} username={username} isPublic={true} horoscopeSign={horoscopeSign}/>
-                <Nav/>
-              </div>
-            )
-          }
-        }
-      </Await>
+      <div className={`${themeClass}`}>
+        <Header id={_id} isPublic={true} horoscopeSign={horoscopeSign} />
+        <div className='md:flex md:flex-row md:justify-center mb-10  md:border-b-4 '>
+          <Bio id={_id} profilePicture={profilePicture} bio={bio} username={username} isPublic={true} />
+        </div>
+        <Posts id={_id} profilePicture={profilePicture} username={username} isPublic={true} setPage={setPage} page={page} />
+        <Nav />
+      </div>
     )
   }
 
@@ -54,11 +73,14 @@ const PublicProfile = () => {
             color="white"
           />
         </div>}>
-          <ProfileData />
+          <Await resolve={loaderData.UserInfo}>
+            <ProfileData />
+          </Await>
         </React.Suspense>
       </ThemeContext.Provider>
     </div>
   )
 }
 
-export default PublicProfile
+export default PublicProfile;
+

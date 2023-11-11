@@ -11,7 +11,7 @@ const useLogout = () => {
             const response = await axios('/logout', {
                 withCredentials: true
             });
-            redirect('/')
+            redirect('/login?message=see you soon')
         } catch (err) {
             console.error(err);
         }

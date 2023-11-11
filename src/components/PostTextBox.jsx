@@ -32,7 +32,7 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 import { useSearchParams } from 'react-router-dom';
 
-const PostTextBox = ({ id }) => {
+const PostTextBox = ({ id, setPage, page}) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const theme = searchParams.get("theme");
     const axiosPrivate = useAxiosPrivate();
@@ -45,14 +45,15 @@ const PostTextBox = ({ id }) => {
     })
 
     const handleSubmit = async () => {
-
         if (post.content.length === 0) return setMessage("Oops... please try again.");
 
         if (post.length > 100) return setMessage("You've exceeded the number of words!");
 
         try {
             const response = await axiosPrivate.post(`/posts`, post);
-            location.reload();
+            if(response.status == 201){
+                setPage(prev=>({...prev, results: [response.data,...page.results]}))
+            }
         } catch (e) {
             if (!e?.response) {
                 setErrMsg("No Server Response");
@@ -67,7 +68,7 @@ const PostTextBox = ({ id }) => {
     return (
         <div className={`w-full my-6 px-2 md:m-auto md:max-w-md`}>
             <h1 className='text-2xl text-center'>{theme === "light" ? "Affirmations" : "Shadow Thoughts"}</h1>
-            <textarea className='w-full h-[100px] border-4 my-2' placeholder="What's on your mind?" name="content" value={post.content} onChange={(e) => setPost((prevData) => ({ ...prevData, content: e.target.value }))} />
+            <textarea className='w-full h-[100px] border-4 my-2 text-black' placeholder="What's on your mind?" name="content" value={post.content} onChange={(e) => setPost((prevData) => ({ ...prevData, content: e.target.value }))} />
             <div className='flex justify-between'>
                 <button className='w-[80px] border rounded-full bg-pink-950 text-white' onClick={() => handleSubmit()}>Submit</button>
                 <div className='w-2/4 flex justify-around sm:w-[35%] sm:justify-between'>

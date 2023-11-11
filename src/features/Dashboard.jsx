@@ -19,7 +19,6 @@ const Dashboard = () => {
 
     const signOut = async () => {
         await logout();
-        navigate('/');
     }
 
     return (
@@ -31,7 +30,7 @@ const Dashboard = () => {
                 <Link className='underline' to='/feedback'>Give Feedback?</Link>
                 <Link className='underline' to='/about'>About Stars</Link>
                 <CopyToClipboard
-                    text={`localhost:3000/users/${userId}`}
+                    text={`socialstars.onrender.com/ispublic/profile/${userId}`}
                     onCopy={() => setCopied(true)}
                 >
                     <div>

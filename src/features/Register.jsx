@@ -96,15 +96,12 @@ const Register = () => {
                     </section>
                 </div >
             ) : isLoading ? (
-                <div className="h-screen flex justify-center items-center align-center">
-                    <ClipLoader
-                        size={130}
-                        color="white"
-                    />
+                <div className='w-full h-screen bg-space-background flex jusitfy-center items-center '>
+                    <ClipLoader size={70} color='pink' className='mx-auto' />
                 </div>
             ) : (
                 <div className='w-full h-screen bg-space-background'>
-                    <section className='w-[400px] h-[400px] absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] opacity-95 text-center text-slate-300'>
+                    <section className='w-[400px] h-[420px] absolute top-0 left-0 bottom-0 right-0 m-auto rounded-2xl bg-stone-950/[0.9] opacity-95 text-center text-slate-300'>
                         <p ref={errRef} className={errMsg ? "text-red-600" : "hidden"} aria-live="assertive">{errMsg}</p>
                         <h1 className="text-2xl">Register</h1>
                         <form onSubmit={handleSubmit} className='px-2 flex flex-col grow justify-evenly items-center mt-4 text-white'>
@@ -175,11 +172,11 @@ const Register = () => {
 
                             <label htmlFor="horoscopeSign">Zodiac:</label>
                             <Select value={horoscopeSign} setHoroscopeSign={setHoroscopeSign} />
-                            <button disabled={!validName || !validPwd || !validMatch ? true : false} className="w-[100px] mt-4 border rounded-full my-2 bg-pink-950">Sign Up</button>
+                            <button disabled={!validName || !validPwd || !validMatch ? true : false} className={`w-[100px] mt-4 border rounded-full my-2 ${!validName || !validPwd || !validMatch ? 'opacity-30' : ' bg-pink-950'} }`}>Sign Up</button>
                         </form>
                         <p>
                             Already registered?<br />
-                            <span className="line"> 
+                            <span className="line">
                                 <Link to="/login" className="underline">Sign In</Link>
                             </span>
                         </p>
@@ -190,4 +187,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default Register;

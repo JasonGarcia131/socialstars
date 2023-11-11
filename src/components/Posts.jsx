@@ -6,43 +6,27 @@ import Post from './Post';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
+// Limits the amount of posts to be fecthed
 const LIMIT = 10;
-
-const Posts = ({ id, username, isPublic, profilePicture}) => {
+const Posts = ({ id, username, isPublic, profilePicture, setPage, page }) => {
     const axiosPrivate = useAxiosPrivate();
     const [editMode, setEditMode] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const theme = useContext(ThemeContext);
-
-    useEffect(() => {
-    }, [theme]);
-
-    //State variable for the pagination results
-    const [page, setPage] = useState({
-        next: {
-            page: 1,
-            limit: 0
-        },
-        previous: {
-            page: 0,
-            limit: 0
-        },
-        results: []
-    });
 
     const getPosts = async (nextPage) => {
         const controller = new AbortController();
         try {
             const response = await axiosPrivate.get(`/posts/paginate/?id=${id}&page=${nextPage}&limit=${LIMIT}&theme=${theme}&public=${isPublic}`, {
                 signal: controller.signal
-            }) 
+            })
             controller.abort();
-            setPage({
+            setPage((prevPost) => ({
                 next: response?.data?.next,
                 previous: response?.data?.previous,
                 total: response?.data?.total,
-                results: response?.data?.results
-            });
+                results: [...prevPost.results, response?.data?.results]
+            }));
 
         } catch (e) {
             if (!e?.response) {
@@ -55,7 +39,7 @@ const Posts = ({ id, username, isPublic, profilePicture}) => {
             }
         }
     }
-
+    
     //Toggles delete button to hide or show
     const toggleEditDelete = () => {
         setEditMode(!editMode)
@@ -78,7 +62,6 @@ const Posts = ({ id, username, isPublic, profilePicture}) => {
             }
         }
     }
-   
     return (
         <div className={`w-full px-2`}>
             <p className='text-red-500 font-bold mb-2 text-center'>{errMsg}</p>
@@ -86,14 +69,14 @@ const Posts = ({ id, username, isPublic, profilePicture}) => {
                 dataLength={page.results.length}
                 next={() => getPosts(page.next?.page)}
                 hasMore={page.next}
-                loader={<div className='w-full text-center'><ClipLoader size={70} color='pink'/></div>
+                loader={<div className='w-full text-center'><ClipLoader size={70} color='pink' /></div>
                 }
                 scrollableTarget="scrollableDiv"
-                scrollThreshold={.70}
-                endMessage="No posts"
+                scrollThreshold={.80}
+                endMessage="End of thread"
                 className={`mb-20`}
             >
-                {page.results.map((post, index) => (
+                {page.results.flat().map((post, index) => (
                     <Post key={index} username={username} profilePicture={profilePicture} content={post.content} handleDelete={handleDelete} toggleEditDelete={toggleEditDelete} editMode={editMode} date={post.createdAt} id={post._id} isPrivate={post.isPrivate} isPublic={isPublic} />
                 ))}
             </InfiniteScroll>

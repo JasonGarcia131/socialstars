@@ -1,14 +1,13 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./features/Landing";
-import Login, { loginLoader } from "./features/Login";
+import Login from "./features/Login";
 import Register from "./features/Register";
 import Dashboard from "./features/Dashboard";
 import RequireAuth from './components/RequireAuth'
 import Unauthorized from './components/Unauthorized'
 import PersistLogin from "./components/PersistLogin";
 import Profile, { profileLoader } from "./features/Profile";
-import useAuth from "./hooks/useAuth";
 import PageNotFound from "./components/PageNotFound";
 import PublicProfile from "./features/PublicProfile";
 import News from "./components/News";
@@ -20,7 +19,6 @@ const ROLES = {
   Admin: 1994
 }
 const App = () => {
-  const { setAuth} = useAuth();
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
 
@@ -28,7 +26,7 @@ const App = () => {
       <Route index element={<Landing />} />
       <Route path="unauthorized" element={<Unauthorized />} />
       <Route path="about" element={<About/>}/>
-      <Route path="login" element={<Login />} loader={loginLoader}/>
+      <Route path="login" element={<Login />}/>
       <Route path="register" element={<Register />}/>
       <Route exact path={`ispublic/profile/:userId`}
         element={<PublicProfile />}

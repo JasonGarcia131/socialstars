@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
-import useRefreshToken from '../hooks/useRefreshToken'
+import useRefreshToken from "../hooks/useRefreshToken";
 import useAuth from '../hooks/useAuth';
 
 const PersistLogin = () => {
