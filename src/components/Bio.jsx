@@ -105,7 +105,6 @@ const Bio = ({ username, profilePicture, bio, id, isPublic, setProfileData }) =>
                 </div>
                 )
             }
-
         </section>
     )
 }

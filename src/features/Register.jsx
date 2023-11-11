@@ -73,6 +73,7 @@ const Register = () => {
             setPwd('');
             setMatchPwd('');
         } catch (err) {
+            setIsLoading(false);
             if (!err?.response) {
                 setErrMsg('No Server Response');
             } else if (err.response?.status === 409) {
