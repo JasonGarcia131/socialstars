@@ -21,6 +21,7 @@ const Profile = () => {
   const loaderData = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const { auth } = useAuth();
+  const navigate = useNavigate();
   const decode = auth?.accessToken
     ? jwt_decode(auth.accessToken)
     : undefined
