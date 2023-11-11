@@ -22,8 +22,8 @@ import libraShadow from "./images/libra-shadow.png";
 import piscesLight from "./images/pisces-light.png";
 import piscesShadow from "./images/pisces-shadow.png";
 
-import sagitariusLight from "./images/sagitarius-light.png";
-import sagitariusShadow from "./images/sagitarius-shadow.png";
+import sagittariusLight from "./images/sagittarius-light.png";
+import sagittariusShadow from "./images/sagittarius-shadow.png";
 
 import scorpioLight from "./images/scorpio-light.png";
 import scorpioShadow from "./images/scorpio-shadow.png";
@@ -93,8 +93,8 @@ export const horoscopeImages = [
     },
     {
         image: {
-            light: sagitariusLight,
-            shadow: sagitariusShadow
+            light: sagittariusLight,
+            shadow: sagittariusShadow
         },
         horoscope: 'sagittarius'
     },
