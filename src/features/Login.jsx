@@ -112,7 +112,7 @@ const Login = () => {
                             required
                             className='my-2 p-2 rounded-lg w-full text-black'
                         />
-                        <button className='w-[100px] border rounded-full my-2 bg-pink-950 '>Sign In</button>
+                        <button className={`w-[100px] border rounded-full my-2 bg-pink-950  ${!user || !pwd ? 'opacity-30' : ' bg-pink-950'} `}>Sign In</button>
                         <div>
                             <input
                                 type="checkbox"

@@ -70,7 +70,7 @@ const PostTextBox = ({ id, setPage, page}) => {
             <h1 className='text-2xl text-center'>{theme === "light" ? "Affirmations" : "Shadow Thoughts"}</h1>
             <textarea className='w-full h-[100px] border-4 my-2 text-black' placeholder="What's on your mind?" name="content" value={post.content} onChange={(e) => setPost((prevData) => ({ ...prevData, content: e.target.value }))} />
             <div className='flex justify-between'>
-                <button className='w-[80px] border rounded-full bg-pink-950 text-white' onClick={() => handleSubmit()}>Submit</button>
+                <button className={`w-[80px] border rounded-full bg-pink-950 text-white ${!post.content ? 'opacity-30' : ' bg-pink-950'} `} onClick={() => handleSubmit()}>Submit</button>
                 <div className='w-2/4 flex justify-around sm:w-[35%] sm:justify-between'>
                     <label htmlFor='private'>Private
                         <input

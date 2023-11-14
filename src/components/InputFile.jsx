@@ -63,7 +63,7 @@ const InputFile = (props) => {
                 isLoading
                     ? <p className="text-">Uploading...</p>
                     : uploadBtn
-                        ? <button className='w-[80px] p-2 border rounded-full bg-pink-950 text-white ' onClick={() => handleSubmit()}>Upload</button>
+                        ? <button className='w-[80px] border rounded-full bg-pink-950 text-white ' onClick={() => handleSubmit()}>Upload</button>
                         : null
             }
         </div>

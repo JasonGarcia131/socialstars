@@ -68,7 +68,7 @@ const Bio = ({ username, profilePicture, bio, id, isPublic, setProfileData }) =>
         }
     }
     return (
-        <section className={`h-[300px] flex flex-col justify-evenly text-center p-4 md:w-1/3`}>
+        <section className={`h-[300px] flex flex-col justify-evenly text-center p-4 md:w-1/3 md:h-[350px]`}>
             <div>
                 <div className='w-[130px] h-[130px] rounded-full mx-auto'>
                     <img className='w-full h-[100%] border-2 rounded-full overflow-hidden' src={profilePicture} />
@@ -89,7 +89,7 @@ const Bio = ({ username, profilePicture, bio, id, isPublic, setProfileData }) =>
             </div>
 
             <div>
-                <p className='italic'>"{bio}"</p>
+                <p className='italic'>"{bio?.trim()}"</p>
             </div>
             {
                 !isPublic && (<div className='flex flex-col justify-center items-center mt-2'>
@@ -99,9 +99,9 @@ const Bio = ({ username, profilePicture, bio, id, isPublic, setProfileData }) =>
                         placeholder="Edit bio"
                         value={userBio.content}
                         onChange={(e) => setUserBio({ content: e.target.value })}
-                        className='border-2'
+                        className='border-2 text-black'
                     />
-                    <button className='p-2 w-[80px] border rounded-full bg-pink-950 text-white mt-2' onClick={() => handleSubmitBio()}>Edit bio</button>
+                    <button className={`w-[80px] border rounded-full bg-pink-950 text-white mt-2  ${!userBio.content ? 'opacity-30' : ' bg-pink-950'} `} onClick={() => handleSubmitBio()}>Edit bio</button>
                 </div>
                 )
             }

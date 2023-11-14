@@ -70,7 +70,7 @@ const PublicProfile = () => {
         <React.Suspense fallback={<div className="h-screen flex justify-center items-center align-center">
           <ClipLoader
             size={130}
-            color="white"
+            color="pink"
           />
         </div>}>
           <Await resolve={loaderData.UserInfo}>

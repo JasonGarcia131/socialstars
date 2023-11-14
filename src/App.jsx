@@ -41,12 +41,13 @@ const App = () => {
             element={<Profile />}
             loader={profileLoader}
           />
-        </Route>
-
-        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="/news" element={<News />} />
+               <Route path="/news" element={<News />} />
           <Route path="/feedback" element={<Feedback />} />
         </Route>
+{/* 
+        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+     
+        </Route> */}
       </Route>
 
       {/* Catch all route */}

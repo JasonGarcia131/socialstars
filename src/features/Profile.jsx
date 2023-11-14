@@ -64,7 +64,7 @@ const Profile = () => {
     return (
       <div className={`${themeClass}`}>
         <Header id={_id} isPublic={false} horoscopeSign={horoscopeSign} />
-        <div className='md:flex md:flex-row mb-10 md:border-b-4 '>
+        <div className='md:h-[350px] md:flex md:flex-row mb-10 md:border-b-4 '>
           <Bio id={_id} profilePicture={profilePicture} bio={bio} username={username} isPublic={false} setProfileData={setProfileData} />
           <PostTextBox id={_id} setPage={setPage} page={page} />
         </div>
@@ -80,7 +80,7 @@ const Profile = () => {
         <React.Suspense fallback={<div className="h-screen flex justify-center items-center align-center">
           <ClipLoader
             size={130}
-            color="white"
+            color="pink"
           />
         </div>}>
           <Await resolve={loaderData.UserInfo}>

@@ -29,8 +29,8 @@ const PersistLogin = () => {
         return () => isMounted = false;
     }, [])
 
-    useEffect(() => {
-    }, [isLoading])
+    // useEffect(() => {
+    // }, [isLoading])
 
     return (
         <>

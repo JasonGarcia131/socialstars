@@ -21,7 +21,7 @@ import { useSearchParams } from 'react-router-dom';
                     <p className='flex-1 mx-2'>{username}</p>
                     <div>{dateOfPost}</div>
                 </div>
-                <div className='overflow-hidden'>{content}</div>
+                <div className='overflow-scroll'>{content}</div>
             </article>
             {
                 !isPublic &&
